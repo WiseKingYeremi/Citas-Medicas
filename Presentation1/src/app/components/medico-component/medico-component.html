@@ -1,0 +1,79 @@
+<mat-card>
+  <div class="p-6 bg-white border-4 border-gray-200 rounded-lg shadow sm">
+    <mat-card-header class="bg-gray-200 h-13 justify-center">
+      <mat-card-title class="font-extrabold! text-[1.5rem]!">
+        Catalogo Medicos
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="relative overflow-x-auto shadow-sm sm:rouded-lg">
+      <table mat-table [dataSource]="dataSource()" class="mat-shadow-2">
+
+  <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> Id. </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="nombre_completo">
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+    <td mat-cell *matCellDef="let element"> {{element.nombre_completo}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="especialidad_nombre">
+    <th mat-header-cell *matHeaderCellDef> Especialdad </th>
+    <td mat-cell *matCellDef="let element"> {{element.especialidad_nombre}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="licencia">
+    <th mat-header-cell *matHeaderCellDef> Licencia </th>
+    <td mat-cell *matCellDef="let element"> {{element.licencia}} </td>
+  </ng-container>
+
+  <!-- TELEFONO Column -->
+  <ng-container matColumnDef="telefono">
+    <th mat-header-cell *matHeaderCellDef> Telefono </th>
+    <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
+  </ng-container>
+
+  <!--Botonera colum-->
+  <ng-container matColumnDef="botonera">
+    <th mat-header-cell *matHeaderCellDef style="text-align: center;">
+      <button (click)="onCreate();" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-0.5 cursor-pointer">
+        <mat-icon>add</mat-icon>
+      </button>
+    </th>
+
+    <td mat-cell *matCellDef="let medico">
+      <div class="flex justify-center gap-1">
+          <button (click)="onInfo(medico.id);" class="flex content-center items-center focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 cursor-pointer">
+            <mat-icon>info</mat-icon></button>
+          <button (click)="onEdit(medico.id);" class="flex content-center items-center focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-2 py- 1cursor-pointer">
+            <mat-icon>edit</mat-icon></button>
+          <button (click)="onDelete(medico.id);" class="flex content-center items-center focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-2 py-1 cursor-pointer">
+            <mat-icon>delete</mat-icon></button>
+          <button (click)="onResetPassword(medico.id);" class="flex content-center items-center focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-2 py-1 cursor-pointer">
+            <mat-icon>key</mat-icon></button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      
+    </mat-card-content>
+  </div>
+  <mat-card-footer class="flex justify-end p-3">
+    <button matFab extended class="mr-2">Filtrar <mat-icon>filter_list</mat-icon></button>
+    <button matFab extended type="button" class="imprimir" (click)="imprimir()">
+      Imprimir <mat-icon>printer</mat-icon>
+    </button>
+  </mat-card-footer>
+</mat-card>

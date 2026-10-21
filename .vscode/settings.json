@@ -1,0 +1,6 @@
+{
+    "editor.inlineSuggest.suppressInSnippetMode": true,
+    "editor.inlineSuggest.syntaxHighlightingEnabled": true,
+    "editor.acceptSuggestionOnCommitCharacter": false,
+    "editor.suggest.shareSuggestSelections": true
+}

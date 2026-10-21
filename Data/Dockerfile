@@ -1,4 +1,4 @@
-FROM php:8.4.19-apache
+FROM php:8.5-apache
 WORKDIR /var/www/html
 
 RUN a2enmod rewrite
@@ -12,6 +12,7 @@ php -r "unlink('composer-setup.php');" && \
 mv composer.phar /usr/local/bin/composer
 
 COPY ./Data/composer.json .
+COPY ./Data/.env .
 
 RUN apt update && apt install -y zip
 RUN apt update && apt install -y git

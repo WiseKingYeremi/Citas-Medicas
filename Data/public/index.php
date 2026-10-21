@@ -1,2 +1,2 @@
-﻿<?php
-phpinfo();
+<?php
+    require "../src/app/App.php";

@@ -1,0 +1,29 @@
+@host = http://localhost:9090/api
+@uri = {{host}}/medicos
+
+GET {{uri}}
+###
+
+POST {{uri}}
+Content-Type: application/json
+
+{
+    "especialidad_id": 2,
+    "nombre_completo": "Maverick Bryan",
+    "licencia": "LIC-1111",
+    "username": "Mabssila",
+    "password": "Clave#2024"
+}
+###
+
+PUT {{uri}}/1
+Content-Type: application/json
+
+{
+    "telefono": "77772222"
+}
+###
+DELETE {{uri}}/2
+###
+
+GET {{uri}}/filter/0/10?nombre=Le&cedula=

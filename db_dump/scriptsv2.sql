@@ -1,4 +1,8 @@
 ﻿-- Tablas del Sistema
+SET NAMES utf8mb4;
+
+USE citas_medicas;
+
 CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL UNIQUE
@@ -15,10 +19,12 @@ CREATE TABLE usuarios (
 
 CREATE TABLE pacientes (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
     cedula VARCHAR(20) NOT NULL UNIQUE,
     nombre_completo VARCHAR(150) NOT NULL,
     fecha_nacimiento DATE NOT NULL,
-    telefono VARCHAR(20)
+    telefono VARCHAR(20),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
 CREATE TABLE especialidades (
@@ -28,20 +34,20 @@ CREATE TABLE especialidades (
 
 CREATE TABLE medicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT,
+    usuario_id INT NOT NULL,
     especialidad_id INT NOT NULL,
     nombre_completo VARCHAR(150) NOT NULL,
     licencia VARCHAR(50) NOT NULL UNIQUE,
     telefono VARCHAR(20),
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (especialidad_id) REFERENCES especialidades(id)
 );
 
 CREATE TABLE administradores (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT,
+    usuario_id INT NOT NULL,
     nombre_completo VARCHAR(150) NOT NULL,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
 CREATE TABLE citas (
@@ -69,8 +75,8 @@ BEGIN
     SELECT COUNT(*) INTO v_existe
     FROM citas
     WHERE medico_id = p_medico_id
-      AND fecha_hora = p_fecha_hora
-      AND estado = 'Programada';
+    AND fecha_hora = p_fecha_hora
+    AND estado = 'Programada';
 
     IF v_existe > 0 THEN
         SET p_resultado = 'Error: El médico ya tiene una cita en ese horario.';
@@ -92,4 +98,34 @@ BEGIN
     WHERE c.paciente_id = p_paciente_id
     ORDER BY c.fecha_hora DESC;
 END //
+
+-- SP para obtener citas asignadas medico
+CREATE PROCEDURE sp_obtener_citas_medico(
+    IN m_medico_id INT
+)
+BEGIN
+    SELECT c.id, c.fecha_hora, c.estado, c.motivo, p.nombre_completo AS paciente
+    FROM citas c
+    INNER JOIN pacientes p ON c.paciente_id = p.id
+    WHERE c.medico_id = m_medico_id
+    ORDER BY c.fecha_hora DESC;
+END //
 DELIMITER ;
+
+-- Datos iniciales
+INSERT INTO roles(nombre) VALUES('Admin');
+INSERT INTO roles(nombre) VALUES('Médico');
+INSERT INTO roles(nombre) VALUES('Paciente');
+
+INSERT INTO especialidades(nombre) VALUES
+    ('Dermatologia'),
+    ('Medicina General'),
+    ('Cardiología'),
+    ('Pediatría');
+
+-- Usuario de prueba (contraseña: Admin123!)
+INSERT INTO usuarios (username, password_hash, rol_id)
+VALUES ('admin', '$2y$12$T1V03MlBhUveQPBcOzDqI.LAp/w7eknOVMGKAx5ILEPwtw/IjQx0S', 1);
+
+INSERT INTO administradores (usuario_id, nombre_completo)
+VALUES (LAST_INSERT_ID(), 'Administrador');

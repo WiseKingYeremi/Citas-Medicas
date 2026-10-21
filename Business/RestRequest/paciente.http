@@ -1,0 +1,35 @@
+@host = http://localhost:8080/api
+@uri = {{host}}/pacientes
+
+GET {{uri}}
+###
+
+GET {{uri}}/3
+###
+
+GET {{uri}}/filter/0/20?nombre_completo=Yeremi
+###
+
+POST {{uri}}
+Content-Type: application/json
+
+{
+    "cedula": "7-0276-0991",
+    "nombre_completo": "Maverick Bryan Correa",
+    "fecha_nacimiento": "2000-06-30",
+    "telefono": "1111-2222",
+    "username": "PiraMabs",
+    "password": "Clave123#"
+}
+###
+
+PUT {{uri}}/3
+Content-Type: application/json
+
+{
+    "nombre_completo": "Yeremi Josue Edwards McDonald",
+    "telefono": "86997580"
+}
+###
+
+DELETE {{uri}}/4

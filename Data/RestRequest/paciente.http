@@ -1,0 +1,28 @@
+@host = http://localhost:8080/api
+@uri = {{host}}/pacientes
+
+GET {{uri}}
+###
+
+POST {{uri}}
+Content-Type: application/json
+
+{
+    "cedula": "7-0275-0956",
+    "nombre_completo": "Yeremi Edwards McDonald",
+    "fecha_nacimiento": "2000-04-12",
+    "telefono": "88884444",
+    "username": "WiseKing",
+    "password": "12345678"
+}
+###
+
+PUT {{uri}}/2
+Content-Type: application/json
+
+{
+    "nombre_completo": "Ana Morales Castro",
+    "telefono": "77772222"
+}
+###
+DELETE {{uri}}/2

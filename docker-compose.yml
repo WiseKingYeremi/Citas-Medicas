@@ -18,11 +18,37 @@ services:
     container_name: web_datos
     volumes:
       - ./Data/public:/var/www/html/public
+      - ./Data/src:/var/www/html/src
     build:
       context: .
       dockerfile: ./Data/Dockerfile
     ports:
       - 8080:80
+    depends_on:
+      - db
+
+  webnegocio:
+    container_name: web_negocio
+    volumes:
+      - ./Business/public:/var/www/html/public
+      - ./Business/src:/var/www/html/src
+    build:
+      context: .
+      dockerfile: ./Business/Dockerfile
+    ports:
+      - 9090:80
+    env_file:
+      - ./Business/.env
+    depends_on:
+      - webdatos
+
+  webpresentation:
+    container_name: web_presentation
+    build:
+      context: ./Presentation1
+      dockerfile: Dockerfile
+    ports:
+      - 4200:80
 
 secrets:
   db_password:
